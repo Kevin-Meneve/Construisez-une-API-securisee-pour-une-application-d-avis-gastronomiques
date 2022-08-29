@@ -1,4 +1,5 @@
 const Sauce = require('../models/sauce');
+const fs = require('fs');
 
 exports.getAllSauce = (req, res, next) => {
     Sauce.find()
@@ -80,21 +81,11 @@ exports.createSauce = (req, res, next) => {
             if (like == 1 ){
                 sauce.usersLiked.push(req.auth.userId);
                 sauce.likes ++;
-                if (sauce.usersDisliked.indexOf(req.auth.userId) != -1){
-                    sauce.usersDisliked.splice(sauce.usersDisliked.indexOf(req.auth.userId),1);
-                    sauce.dislikes --;
-                }
-                res.status(200).json({ message : 'Sauce liker'});
             }
             else {
                 if(like == -1){
                     sauce.usersDisliked.push(req.auth.userId);
                     sauce.dislikes ++;
-                    if (sauce.usersLiked.indexOf(req.auth.userId) != -1){
-                        sauce.usersLiked.splice(sauce.usersLiked.indexOf(req.auth.userId),1);
-                        sauce.likes --;
-                    }
-                    res.status(200).json({ message : 'Sauce disliker'});
                 }
                 else{
                     if(like == 0){
@@ -106,10 +97,13 @@ exports.createSauce = (req, res, next) => {
                             sauce.usersLiked.splice(sauce.usersLiked.indexOf(req.auth.userId),1);
                             sauce.likes --;
                         }
-                        res.status(200).json({ message : 'Sauce non liker'});
                     }
                 }
             }
+            Sauce.updateOne({ _id: req.params.id}, { likes : sauce.likes , dislikes : sauce.dislikes, usersDisliked : sauce.usersDisliked, usersLiked : sauce. usersLiked})
+            .then(() => res.status(200).json({message : 'Préférence enregistrée'}))
+            .catch(error => res.status(401).json({ error }));
+
         })
         .catch( error => {
             res.status(500).json({ error });
