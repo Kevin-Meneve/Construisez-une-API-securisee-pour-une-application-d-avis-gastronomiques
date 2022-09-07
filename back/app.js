@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const helmet = require('helmet');
 
 //Configuration de dotenv
 const dotenv = require('dotenv');
@@ -14,6 +15,7 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
+//Récupération des données du .env
 const MONGO_ID = process.env.MONGO_ID;
 const MONGO_MDP = process.env.MONGO_MDP;
 //Lancement du serveur
@@ -31,6 +33,7 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json());
+app.use(helmet());
 
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes );
