@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const helmet = require('helmet');
+const sanitize = require('express-mongo-sanitize');
 
 //Configuration de dotenv
 const dotenv = require('dotenv');
@@ -18,8 +19,10 @@ const app = express();
 //Récupération des données du .env
 const MONGO_ID = process.env.MONGO_ID;
 const MONGO_MDP = process.env.MONGO_MDP;
+const MONGO_CLUSTER = process.env.MONGO_CLUSTER;
+const MONGO_NAME = process.env.MONGO_NAME;
 //Lancement du serveur
-mongoose.connect(`mongodb+srv://${MONGO_ID}:${MONGO_MDP}@cluster0.gknawcy.mongodb.net/test`,
+mongoose.connect(`mongodb+srv://${MONGO_ID}:${MONGO_MDP}@${MONGO_CLUSTER}/${MONGO_NAME}?retryWrites=true&w=majority',`, 
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -34,6 +37,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 app.use(helmet.xssFilter());
+app.use(sanitize());
 
 app.use('/api/sauces', saucesRoutes);
 app.use('/api/auth', userRoutes );
