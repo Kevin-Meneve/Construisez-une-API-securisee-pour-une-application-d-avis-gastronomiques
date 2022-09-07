@@ -1,14 +1,23 @@
+// importation de package
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 
+//Configuration de dotenv
+const dotenv = require('dotenv');
+dotenv.config();
+
+//Init des routes
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
 const app = express();
 
-mongoose.connect('mongodb+srv://utilisateur1:1234@cluster0.gknawcy.mongodb.net/test',
+const MONGO_ID = process.env.MONGO_ID;
+const MONGO_MDP = process.env.MONGO_MDP;
+//Lancement du serveur
+mongoose.connect(`mongodb+srv://${MONGO_ID}:${MONGO_MDP}@cluster0.gknawcy.mongodb.net/test`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
