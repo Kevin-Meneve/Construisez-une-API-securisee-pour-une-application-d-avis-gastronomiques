@@ -20,4 +20,4 @@ Pour lancer le projet :
 
 -Depuis le front : faire un "npm start"
 -Depuis le back : faire un "node server" ou un "nodemon server" (Si vous avez installer nodemon sur votre environnement)
--Aller sur "http://localhost:4200/login" pour voir le projet une fois lancer.
+-Aller sur "http://localhost:4200/login" pour voir le projet une fois le front et le back lancer.
