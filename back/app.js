@@ -17,12 +17,10 @@ const userRoutes = require('./routes/user');
 const app = express();
 
 //Récupération des données du .env
-const MONGO_ID = process.env.MONGO_ID;
-const MONGO_MDP = process.env.MONGO_MDP;
-const MONGO_CLUSTER = process.env.MONGO_CLUSTER;
-const MONGO_NAME = process.env.MONGO_NAME;
+const MONGO_LINK = process.env.MONGO_LINK;
+
 //Lancement du serveur
-mongoose.connect(`mongodb+srv://${MONGO_ID}:${MONGO_MDP}@${MONGO_CLUSTER}/${MONGO_NAME}?retryWrites=true&w=majority',`, 
+mongoose.connect(`${MONGO_LINK}`, 
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
